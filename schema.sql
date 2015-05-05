@@ -4,7 +4,7 @@ CREATE TABLE users (
   id INT PRIMARY KEY AUTO_INCREMENT,
   email TEXT NOT NULL,
   password_digest TEXT NOT NULL,
-  balance INT
+  balance DECIMAL(10,2)
 ) 
   AUTO_INCREMENT = 1, 
   ENGINE = innodb;
@@ -29,7 +29,7 @@ CREATE TABLE orders (
   short_description TEXT NOT NULL,
   full_description TEXT,
   until DATETIME,
-  cost INT,
+  cost DECIMAL(10,2),
   created_by INT,
   executed_by INT,
 
