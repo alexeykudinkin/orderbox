@@ -1,0 +1,11 @@
+<Files ~ ".*(x|X)\.php$">
+  Order deny,allow
+  Deny from all
+</Files>
+
+# - This is insane
+# - However!
+<Files ~ '\.(sql)$'>
+  Order deny,allow
+  Deny from all
+</Files>
