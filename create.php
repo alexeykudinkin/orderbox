@@ -8,32 +8,62 @@
 
   include('createX.php'); ?>
 
+<!DOCTYPE html>
 <html>
-<head></head>
-<body>
+  <head>
+    <title>OrderBox</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  </head>
 
-  <form action="" method="post">
+  <body>
 
-    <label>Short</label>
-    <input type="text" name="short_description">
+    <div class="container">
+      <h1>OrderBox</h1>
 
-    <label>Full</label>
-    <input type="text" name="full_description">
+      <div class="col-md-offset-4 col-md-4">
+        <h2>Create</h2>
 
-    <label>Cost</label>
-    <input type="number" name="cost">
+        <form class="form-horizontal" action="" method="post">
 
-    <input name="submit" type="submit" value="Post!">
+          <hr/>
 
-  </form>
+          <div class="form-group">
+            <label for="short_decription" class="col-sm-2 control-label">Short</label>
+            <div class="col-sm-10">
+              <input id="short_decription" type="text" name="short_description" placeholder="Short description" class="form-control">
+            </div>
+          </div>
 
-  <?php echo count(get_errors()) ?>
-  <?php for ($i = 0; $i < count(get_errors()); ++$i) { ?>
-    <span>
-      <?php echo get_errors()[$i]; ?>
-    </span>
-  <?php } ?>
+          <div class="form-group">
+            <label for="full_description" class="col-sm-2 control-label">Full</label>
+            <div class="col-sm-10">
+              <input id="full_description" type="text" name="full_description" placeholder="Full description" class="form-control">
+            </div>
+          </div>
 
-</body>
+          <div class="form-group">
+            <label for="cost" class="col-sm-2 control-label">Cost</label>
+            <div class="col-sm-10">
+              <input id="cost" type="number" name="cost" placeholder="Estimated cost" class="form-control">
+            </div>
+          </div>
+
+          <hr/>
+
+          <input name="submit" type="submit" value="Post" class="btn btn-default col-sm-offset-6">
+
+        </form>
+
+      </div>
+
+      <?php for ($i = 0; $i < count(get_errors()); ++$i) { ?>
+        <span>
+          <?php echo get_errors()[$i]; ?>
+        </span>
+      <?php } ?>
+
+    </div>
+
+  </body>
+
 </html>
-
