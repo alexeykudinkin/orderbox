@@ -9,7 +9,7 @@
     $user = mysql_fetch_assoc($q);
     ?>
 
-  <h2 class="label label-default"><?php echo $user['email'] ?></h2>
+  <h2 class="label label-default"><?php echo htmlspecialchars($user['email']) ?></h2>
   <h2 class="label label-default"><?php echo $user['balance'] ?> $</h2>
 
 </div>
