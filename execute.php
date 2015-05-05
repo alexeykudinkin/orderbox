@@ -5,6 +5,8 @@
   include('auth.php');
   include('conn.php');
   include('responses.php');
+
+  include('configX.php');
    
   check_whether_authenticated_or_forbid();
 
@@ -24,7 +26,7 @@
 
       $a = mysql_query("SELECT @COST:=cost, @CUSTOMER:=created_by FROM orders WHERE id=$oid", $conn);
       $b = mysql_query("UPDATE orders  SET executed_by=$eid WHERE id=$oid", $conn);
-      $c = mysql_query("UPDATE users   SET balance=balance + @COST WHERE id=$eid", $conn);
+      $c = mysql_query("UPDATE users   SET balance=balance + (@COST * (1 - $fee)) WHERE id=$eid", $conn);
       $d = mysql_query("UPDATE users   SET balance=balance - @COST WHERE id=@CUSTOMER", $conn);
 
       if ($a && $b && $c && $d) {
