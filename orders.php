@@ -3,9 +3,10 @@
   session_start();
 
   include('auth.php');
-  include('conn.php');
 
   check_whether_authenticated_or_redirect("login.php");
+
+  include('conn.php');
 
   $conn = db_conn_open("vk");
 
@@ -14,8 +15,12 @@
     respond_internal_error();
     exit;
   }
+
+  include('csrf_guardX.php');
     
-  $q = mysql_query("SELECT orders.*, users.email FROM orders JOIN users ON orders.created_by = users.id", $conn); ?> 
+  $q = mysql_query("SELECT orders.*, users.email FROM orders JOIN users ON orders.created_by = users.id", $conn); 
+  
+  ?> 
 
 <!DOCTYPE html>
 <html>

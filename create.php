@@ -16,7 +16,10 @@
     exit;
   }
 
-  include('createX.php'); ?>
+  include('createX.php');
+  include('csrf_guardX.php');
+
+ ?>
 
 <!DOCTYPE html>
 <html>
