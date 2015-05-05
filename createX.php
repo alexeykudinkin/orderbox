@@ -1,5 +1,4 @@
 <?php 
-  include('conn.php');
   include('errors.php');
 
   if (isset($_POST['submit'])) {
@@ -9,14 +8,6 @@
       respond_unprocessable();
 
     } else {
-
-      $conn = db_conn_open("vk");
-
-      if (!isset($conn)) {
-        push_error("Couldn't connect to the Database!");
-        respond_internal_error();
-        exit;
-      }
 
       $short_description  = $_POST['short_description'];
       $full_description   = $_POST['full_description'];
@@ -37,8 +28,6 @@ $short_description', '$full_description', '$cost', '$user')", $conn);
         push_error("Sorry! Failed to create new order!");
         respond_internal_error();
       }
-
-      db_conn_close($conn);
     }
   }
   ?>
