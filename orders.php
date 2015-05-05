@@ -16,11 +16,7 @@
     exit;
   }
 
-  include('csrf_guardX.php');
-    
-  $q = mysql_query("SELECT orders.*, users.email FROM orders JOIN users ON orders.created_by = users.id", $conn); 
-  
-  ?> 
+  include('csrf_guardX.php'); ?> 
 
 <!DOCTYPE html>
 <html>
@@ -40,6 +36,8 @@
           <h2>Orders</h2>
 
           <?php 
+    
+            $q = mysql_query("SELECT orders.*, users.email FROM orders JOIN users ON orders.created_by = users.id", $conn); 
 
             while ($order = mysql_fetch_assoc($q)) { 
 
@@ -63,16 +61,13 @@
               
                 <div class="panel-body">
                   <p>
-                  <?php echo $full_description; ?>
+                    <?php echo $full_description; ?>
                   </p>
                 
                   <br/>
 
                   <span class="label label-info"><?php echo $cost; ?> $</span>
-                  <span class="label label-info"><?php echo $until; ?></span>
                   <span class="label label-info"><?php echo $customer; ?></span>
-
-                  <!-- CSRF Protection -->
 
                   <form action="execute.php" method="post" class="pull-right">
                     <input name="oid" type="hidden" value="<?php echo $oid ?>">
