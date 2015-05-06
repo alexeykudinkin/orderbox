@@ -35,6 +35,8 @@
         <div class="col-md-offset-4 col-md-4">
           <h2>Orders</h2>
 
+          <hr/>
+
           <?php 
     
             $q = mysql_query("SELECT orders.*, users.email FROM orders JOIN users ON orders.created_by = users.id", $conn); 
@@ -50,35 +52,37 @@
               $cost               = $order['cost'];
               $until              = $order['until'];
               $oid                = $order['id'];     ?>
+  
+              <div class="order">            
+  
+                <div class="panel panel-default">
 
-              <hr />
-              
-              <div class="panel panel-default">
-
-                <div class="panel-heading">
-                  <h4><?php echo $short_description; ?></h4>
-                </div>
-              
-                <div class="panel-body">
-                  <p>
-                    <?php echo $full_description; ?>
-                  </p>
+                  <div class="panel-heading">
+                    <h4><?php echo $short_description; ?></h4>
+                  </div>
                 
-                  <br/>
+                  <div class="panel-body">
+                    <p>
+                      <?php echo $full_description; ?>
+                    </p>
+                  
+                    <br/>
 
-                  <span class="label label-info"><?php echo $cost; ?> $</span>
-                  <span class="label label-info"><?php echo $customer; ?></span>
+                    <span class="label label-info"><?php echo $cost; ?> $</span>
+                    <span class="label label-info"><?php echo $customer; ?></span>
 
-                  <form action="execute.php" method="post" class="pull-right">
-                    <input name="oid" type="hidden" value="<?php echo $oid ?>">
-                    <input name="submit" type="submit" value="Execute" class="btn btn-default">
-                  </form>
+                    <form id="execute" action="execute.php" method="post" class="pull-right">
+                      <input name="oid" type="hidden" value="<?php echo $oid ?>">
+                      <input name="submit" type="submit" value="Execute" class="btn btn-default">
+                    </form>
+
+                  </div>
 
                 </div>
+                
+                <hr/>
 
               </div>
-              
-              <hr />
 
           <?php 
             } 
@@ -92,6 +96,30 @@
     </div>
 
   </body>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $("#execute").submit(function (e) {
+        e.preventDefault();
+
+        var order = $(this).closest("div.order");
+
+        $.ajax({
+          data: $(this).serialize(),
+          type: $(this).attr('method'),
+          url:  $(this).attr('action'),
+          success: function (response, status, jqXHR) {
+            if (jqXHR.status == 200) {
+              order.remove();
+            }
+          }
+        });
+  
+        return false;
+      });
+    });
+  </script>
 
 </html>
 
