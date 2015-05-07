@@ -1,6 +1,8 @@
 
 <div class="row">
-  <h1>OrderBox</h1>
+  <a href="orders.php" style="text-decoration: none; color: #000000">
+    <h1>OrderBox</h1>
+  </a>
 
   <?php 
     $id   = $_SESSION['user'];
@@ -11,5 +13,7 @@
 
   <h2 class="label label-default"><?php echo htmlspecialchars($user['email']) ?></h2>
   <h2 class="label label-default"><?php echo $user['balance'] ?> $</h2>
+
+  <button class="btn btn-xs btn-default" onclick="location='logout.php'">Sign out</button>
 
 </div>
