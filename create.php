@@ -6,7 +6,7 @@
 
   check_whether_authenticated_or_redirect("login.php");
 
-  include('conn.php');
+  include('connX.php');
 
   $conn = db_conn_open("vk");
 
