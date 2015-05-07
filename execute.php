@@ -4,7 +4,7 @@
 
   include('authX.php');
   include('connX.php');
-  include('responses.php');
+  include('responsesX.php');
 
   include('configX.php');
    
