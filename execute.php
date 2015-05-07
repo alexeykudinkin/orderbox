@@ -2,7 +2,7 @@
 
   session_start();  
 
-  include('auth.php');
+  include('authX.php');
   include('connX.php');
   include('responses.php');
 
