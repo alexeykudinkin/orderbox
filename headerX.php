@@ -16,4 +16,40 @@
 
   <button class="btn btn-xs btn-default" onclick="location='logout.php'">Sign out</button>
 
+  
+  <script type="text/javascript">
+    function showAlert(a) {
+
+      $(a).addClass("in");
+
+      setTimeout(function () {
+        hideAlert(a);
+      }, 5000);
+    }
+                          
+    function hideAlert(a) {
+
+      $(a).removeClass("in");
+
+      setTimeout(function () {
+        $(a).remove();
+      }, 1000);
+    }
+
+    $(document).ready(function () {
+      $("#alert-section")
+        .children()
+        .each(function(_, a) { showAlert(a); });
+
+    });
+  </script>
+
+  <div id="alert-section" style="position: absolute; top: 15%; left: 45%;">
+    <?php for ($i = 0; $i < count(get_errors()); ++$i) { ?>
+      <div id="alert" class="alert alert-warning fade" role="alert">
+        <?php echo get_errors()[$i]; ?>
+      </div>
+    <?php } ?>
+  </div>
+
 </div>

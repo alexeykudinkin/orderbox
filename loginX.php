@@ -18,12 +18,6 @@
 
       $conn = db_conn_open("vk");
 
-      if (!isset($conn)) {
-        push_error("Couldn't connect to the Database!");
-        respond_internal_error();
-        exit;
-      }
-
       $email    = mysqli_real_escape_string($conn, stripslashes($email));
       $password = mysqli_real_escape_string($conn, stripslashes($password));
 

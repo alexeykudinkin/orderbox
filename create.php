@@ -10,12 +10,6 @@
 
   $conn = db_conn_open("vk");
 
-  if (!isset($conn)) {
-    push_error("Couldn't connect to the Database!");
-    respond_internal_error();
-    exit;
-  }
-
   include('createX.php');
   include('csrf_guardX.php');
 
@@ -70,12 +64,6 @@
           </form>
 
         </div>
-
-        <?php for ($i = 0; $i < count(get_errors()); ++$i) { ?>
-          <span>
-            <?php echo get_errors()[$i]; ?>
-          </span>
-        <?php } ?>
 
       </div>
     </div>

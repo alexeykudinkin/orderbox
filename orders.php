@@ -7,20 +7,19 @@
   check_whether_authenticated_or_redirect("login.php"); 
 
   include('connX.php');
+  include('errorsX.php');
 
-  $conn = db_conn_open("vk");
-
-  if (!isset($conn)) {
-    push_error("Couldn't connect to the Database!");
-    respond_internal_error();
-    exit;
-  } ?>
+  $conn = db_conn_open("vk"); ?>
  
 <!DOCTYPE html>
 <html>
   <head>
     <title>OrderBox</title>
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+    <!-- Unfortunately, it's used inside the header included -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   </head>
 
   <body>
@@ -50,7 +49,6 @@
 
   </body>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script type="text/javascript">
     $(document).ready(function () {
 
