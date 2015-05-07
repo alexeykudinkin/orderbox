@@ -2,7 +2,7 @@
 
   session_start();
 
-  include('auth.php');
+  include('authX.php');
 
   check_whether_authenticated_or_redirect("login.php");
 
