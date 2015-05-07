@@ -19,35 +19,35 @@
     $eid = $_SESSION['user'];
     $oid = $_POST['oid'];
 
-    mysql_query("BEGIN");
+    mysqli_query($conn, "BEGIN");
 
-    $a = mysql_query("SELECT @COST:=cost, @CUSTOMER:=created_by FROM orders WHERE id=$oid", $conn);
+    $a = mysqli_query($conn, "SELECT @COST:=cost, @CUSTOMER:=created_by FROM orders WHERE id=$oid");
   
     # Lock
-    $r = mysql_query("SELECT executed_by FROM orders WHERE id=$oid FOR UPDATE");
+    $r = mysqli_query($conn, "SELECT executed_by FROM orders WHERE id=$oid FOR UPDATE");
 
-    if ($r && ($x = mysql_fetch_assoc($r)) && !empty($x['executed_by'])) {
-      mysql_query("ROLLBACK", $conn);
+    if ($r && ($x = mysqli_fetch_assoc($r)) && !empty($x['executed_by'])) {
+      mysqli_query($conn, "ROLLBACK");
       respond_conflict();
       exit;
     }
 
-    $b = mysql_query("UPDATE orders SET executed_by=$eid WHERE id=$oid", $conn);
+    $b = mysqli_query($conn, "UPDATE orders SET executed_by=$eid WHERE id=$oid");
 
     # Lock
-          mysql_query("SELECT * FROM users WHERE id=$eid FOR UPDATE");
-    $c =  mysql_query("UPDATE users SET balance=balance + (@COST * (1 - $fee)) WHERE id=$eid", $conn);
+          mysqli_query($conn, "SELECT * FROM users WHERE id=$eid FOR UPDATE");
+    $c =  mysqli_query($conn, "UPDATE users SET balance=balance + (@COST * (1 - $fee)) WHERE id=$eid");
 
     # Lock
-          mysql_query("SELECT * FROM users WHERE id=@CUSTOMER FOR UPDATE");
-    $d =  mysql_query("UPDATE users SET balance=balance - @COST WHERE id=@CUSTOMER", $conn);
+          mysqli_query($conn, "SELECT * FROM users WHERE id=@CUSTOMER FOR UPDATE");
+    $d =  mysqli_query($conn, "UPDATE users SET balance=balance - @COST WHERE id=@CUSTOMER");
 
     if ($a && $b && $c && $d) {
-      mysql_query("COMMIT", $conn);
+      mysqli_query($conn, "COMMIT");
       header("location: orders.php");
       exit;
     } else {
-      mysql_query("ROLLBACK", $conn);
+      mysqli_query($conn, "ROLLBACK");
     }
 
     ob_end_flush();

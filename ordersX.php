@@ -2,17 +2,17 @@
   
   if (isset($_GET['from'])) {
 
-  $from = mysql_real_escape_string(stripslashes($_GET['from']));
+  $from = mysqli_real_escape_string($conn, stripslashes($_GET['from']));
 
-  $q = mysql_query("SELECT orders.*, users.email FROM orders JOIN users ON orders.created_by = users.id WHERE orders.id > $from ORDER BY orders.id DESC", $conn); 
+  $q = mysqli_query($conn, "SELECT orders.*, users.email FROM orders JOIN users ON orders.created_by = users.id WHERE orders.id > $from ORDER BY orders.id DESC"); 
 
 } else {
 
-  $q = mysql_query("SELECT orders.*, users.email FROM orders JOIN users ON orders.created_by = users.id ORDER BY orders.id DESC", $conn); 
+  $q = mysqli_query($conn, "SELECT orders.*, users.email FROM orders JOIN users ON orders.created_by = users.id ORDER BY orders.id DESC"); 
 
 }
 
-while ($order = mysql_fetch_assoc($q)) { 
+while ($order = mysqli_fetch_assoc($q)) { 
 
   if (isset($order['executed_by']))
     continue;

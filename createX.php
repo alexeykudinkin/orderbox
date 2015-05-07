@@ -13,14 +13,14 @@
       $full_description   = $_POST['full_description'];
       $cost               = $_POST['cost'];
 
-      $short_description  = mysql_real_escape_string(stripslashes($short_description)); 
-      $full_description   = mysql_real_escape_string(stripslashes($full_description)); 
-      $cost               = mysql_real_escape_string(stripslashes($cost)); 
+      $short_description  = mysqli_real_escape_string($conn, stripslashes($short_description)); 
+      $full_description   = mysqli_real_escape_string($conn, stripslashes($full_description)); 
+      $cost               = mysqli_real_escape_string($conn, stripslashes($cost)); 
 
       $user = $_SESSION['user'];
 
-      $r = mysql_query("INSERT INTO orders (short_description, full_description, cost, created_by) VALUES ('
-$short_description', '$full_description', '$cost', '$user')", $conn);
+      $r = mysqli_query($conn, "INSERT INTO orders (short_description, full_description, cost, created_by) VALUES ('
+$short_description', '$full_description', '$cost', '$user')");
 
       if ($r) {
         header("location: orders.php");
