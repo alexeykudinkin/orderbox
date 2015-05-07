@@ -7,8 +7,8 @@
   <?php 
     $id   = $_SESSION['user'];
 
-    $q    = mysql_query("SELECT * FROM users WHERE id=$id", $conn);
-    $user = mysql_fetch_assoc($q);
+    $q    = mysqli_query($conn, "SELECT * FROM users WHERE id=$id");
+    $user = mysqli_fetch_assoc($q);
     ?>
 
   <h2 class="label label-default"><?php echo htmlspecialchars($user['email']) ?></h2>
