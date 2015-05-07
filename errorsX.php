@@ -8,6 +8,7 @@
   }
 
   function get_errors() {
+    global $errors;
     return $errors;
   }
 
