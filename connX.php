@@ -8,7 +8,7 @@
     $password = $url['pass'];
     $db       = substr($url['path'], 1);
 
-    $conn = mysqli_connect($server, $user, $pass, $db) or die(mysqli_error($conn));
+    $conn = mysqli_connect($server, $user, $password, $db) or die(mysqli_error($conn));
 
     return $conn;
   }
