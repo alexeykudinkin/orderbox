@@ -4,7 +4,7 @@
 
   include('auth.php');
 
-  check_whether_authenticated_or_redirect("login.php");
+  check_whether_authenticated_or_redirect("login.php"); 
 
   include('conn.php');
 
@@ -14,10 +14,8 @@
     push_error("Couldn't connect to the Database!");
     respond_internal_error();
     exit;
-  }
-
-  include('csrf_guardX.php'); ?> 
-
+  } ?>
+ 
 <!DOCTYPE html>
 <html>
   <head>
@@ -37,56 +35,11 @@
 
           <hr/>
 
-          <?php 
-    
-            $q = mysql_query("SELECT orders.*, users.email FROM orders JOIN users ON orders.created_by = users.id", $conn); 
+          <div class="orders">
 
-            while ($order = mysql_fetch_assoc($q)) { 
+            <?php include("ordersX.php"); ?>
 
-              if (isset($order['executed_by']))
-                continue;
-
-              $short_description  = htmlspecialchars($order['short_description']);
-              $full_description   = htmlspecialchars($order['full_description']);
-              $customer           = htmlspecialchars($order['email']);
-              $cost               = $order['cost'];
-              $until              = $order['until'];
-              $oid                = $order['id'];     ?>
-  
-              <div class="order">            
-  
-                <div class="panel panel-default">
-
-                  <div class="panel-heading">
-                    <h4><?php echo $short_description; ?></h4>
-                  </div>
-                
-                  <div class="panel-body">
-                    <p>
-                      <?php echo $full_description; ?>
-                    </p>
-                  
-                    <br/>
-
-                    <span class="label label-info"><?php echo $cost; ?> $</span>
-                    <span class="label label-info"><?php echo $customer; ?></span>
-
-                    <form id="execute" action="execute.php" method="post" class="pull-right">
-                      <input name="oid" type="hidden" value="<?php echo $oid ?>">
-                      <input name="submit" type="submit" value="Execute" class="btn btn-default">
-                    </form>
-
-                  </div>
-
-                </div>
-                
-                <hr/>
-
-              </div>
-
-          <?php 
-            } 
-            db_conn_close($conn); ?>
+          </div>
 
           <a class="btn btn-default" href="create.php">Create</a>
 
@@ -100,6 +53,8 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script type="text/javascript">
     $(document).ready(function () {
+
+      // Bind to the execute-action
       $("#execute").submit(function (e) {
         e.preventDefault();
 
@@ -109,15 +64,50 @@
           data: $(this).serialize(),
           type: $(this).attr('method'),
           url:  $(this).attr('action'),
-          success: function (response, status, jqXHR) {
+
+          success:  function (response, status, jqXHR) {
             if (jqXHR.status == 200) {
               order.remove();
+            }
+          },
+
+          error:    function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status == 409) {
+              alert("Seems, like someone have grabbed the job already!");
+              location.reload();
             }
           }
         });
   
         return false;
       });
+
+      // Bind auto-refresh
+      setInterval(function() {
+        var last = null;
+        var lid = 0;
+
+        $(".order")
+          .find("input[name='oid']")
+          .each(function () {
+            if (lid < $(this).val()) {
+              lid   = $(this).val();
+              last  = $(this).closest("div.order");
+            }
+          })
+
+        $.ajax({
+          data: "from=" + lid,
+          type: "GET",
+          url:  "orders0.php",
+
+          success:  function (response, status, jqXHR) {
+            $("div.orders").prepend(response);
+          },
+
+        });
+
+      }, 1000);
     });
   </script>
 
