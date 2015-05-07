@@ -24,15 +24,15 @@
         exit;
       }
 
-      $email    = mysql_real_escape_string(stripslashes($email));
-      $password = mysql_real_escape_string(stripslashes($password));
+      $email    = mysqli_real_escape_string($conn, stripslashes($email));
+      $password = mysqli_real_escape_string($conn, stripslashes($password));
 
       $password_digest = hmac_sha256($password, $email); # Ok?
 
-      $q = mysql_query("SELECT * FROM users WHERE password_digest='$password_digest' AND email='$email'", $conn);
+      $q = mysqli_query($conn, "SELECT * FROM users WHERE password_digest='$password_digest' AND email='$email'") or die(mysqli_error($conn));
 
-      $rs   = mysql_num_rows($q);
-      $user = mysql_fetch_assoc($q);
+      $rs   = mysqli_num_rows($q);
+      $user = mysqli_fetch_assoc($q);
 
       if ($rs == 1) {
         $_SESSION['user'] = $user['id'];

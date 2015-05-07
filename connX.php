@@ -6,21 +6,15 @@
     $server   = $url['host'];
     $user     = $url['user'];
     $password = $url['pass'];
+    $db       = substr($url['path'], 1);
 
-    $conn = mysql_connect($server, $username, $pass);
-
-    if (!$conn)
-      return NULL;
-
-    $db = substr($url['path'], 1);
-
-    mysql_select_db($db, $conn);
+    $conn = mysqli_connect($server, $user, $pass, $db) or die(mysqli_error($conn));
 
     return $conn;
   }
 
   function db_conn_close($conn) {
-    mysql_close($conn);
+    mysqli_close($conn);
   }
   
 ?>
