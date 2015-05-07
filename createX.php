@@ -26,7 +26,7 @@ $short_description', '$full_description', '$cost', '$uid')");
       if ($r) {
         header("location: orders.php");
       } else {
-        push_error("Sorry! Failed to create new order!");
+        push_error("Sorry! We're experiencing some problems right now and can't create your order!");
         respond_internal_error();
       }
     }
