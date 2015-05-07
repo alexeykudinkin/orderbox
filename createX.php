@@ -1,5 +1,5 @@
 <?php 
-  include('errors.php');
+  include('errorsX.php');
 
   if (isset($_POST['submit'])) {
     if (empty($_POST['short_description']) || empty($_POST['cost'])) {
