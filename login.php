@@ -40,11 +40,6 @@
             <input name="submit" type="submit" value="Sign in" class="btn btn-default">
           </div>
 
-          <?php for ($i = 0; $i < count(get_errors()); ++$i) { ?>
-            <span>
-              <?php echo get_errors()[$i]; ?>
-            </span>
-          <?php } ?>
         </form>
 
       </div>
