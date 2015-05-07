@@ -5,14 +5,21 @@
   </a>
 
   <?php 
-    $id   = $_SESSION['user'];
+    $uid = $_SESSION['user'];
 
-    $q    = mysqli_query($conn, "SELECT * FROM users WHERE id=$id");
-    $user = mysqli_fetch_assoc($q);
-    ?>
+    if ($q = mysqli_query($conn, "SELECT * FROM users WHERE id=$uid")) {
+      $user = mysqli_fetch_assoc($q); ?>
+  
+      <h2 class="label label-default"><?php echo htmlspecialchars($user['email']) ?></h2>
+      <h2 class="label label-default"><?php echo $user['balance'] ?> $</h2>
 
-  <h2 class="label label-default"><?php echo htmlspecialchars($user['email']) ?></h2>
-  <h2 class="label label-default"><?php echo $user['balance'] ?> $</h2>
+  <?php 
+    } else {
+      push_error("Couldn't fetch user-info!");
+    } ?>
+
+
+  <?php var_dump($user) ?>
 
   <button class="btn btn-xs btn-default" onclick="location='logout.php'">Sign out</button>
 

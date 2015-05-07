@@ -1,5 +1,6 @@
 <?php 
   include('errorsX.php');
+  include('responsesX.php');
 
   if (isset($_POST['submit'])) {
     if (empty($_POST['short_description']) || empty($_POST['cost'])) {
@@ -17,10 +18,10 @@
       $full_description   = mysqli_real_escape_string($conn, stripslashes($full_description)); 
       $cost               = mysqli_real_escape_string($conn, stripslashes($cost)); 
 
-      $user = $_SESSION['user'];
+      $uid = $_SESSION['user'];
 
       $r = mysqli_query($conn, "INSERT INTO orders (short_description, full_description, cost, created_by) VALUES ('
-$short_description', '$full_description', '$cost', '$user')");
+$short_description', '$full_description', '$cost', '$uid')");
 
       if ($r) {
         header("location: orders.php");
