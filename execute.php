@@ -3,7 +3,7 @@
   session_start();  
 
   include('auth.php');
-  include('conn.php');
+  include('connX.php');
   include('responses.php');
 
   include('configX.php');
