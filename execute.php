@@ -12,6 +12,8 @@
 
   if (!empty($_POST['oid'])) {
 
+    ob_start();
+
     $conn = db_conn_open("vk");
 
     $eid = $_SESSION['user'];
@@ -20,9 +22,25 @@
     mysql_query("BEGIN");
 
     $a = mysql_query("SELECT @COST:=cost, @CUSTOMER:=created_by FROM orders WHERE id=$oid", $conn);
-    $b = mysql_query("UPDATE orders  SET executed_by=$eid WHERE id=$oid", $conn);
-    $c = mysql_query("UPDATE users   SET balance=balance + (@COST * (1 - $fee)) WHERE id=$eid", $conn);
-    $d = mysql_query("UPDATE users   SET balance=balance - @COST WHERE id=@CUSTOMER", $conn);
+  
+    # Lock
+    $r = mysql_query("SELECT executed_by FROM orders WHERE id=$oid FOR UPDATE");
+
+    if ($r && ($x = mysql_fetch_assoc($r)) && !empty($x['executed_by'])) {
+      mysql_query("ROLLBACK", $conn);
+      respond_conflict();
+      exit;
+    }
+
+    $b = mysql_query("UPDATE orders SET executed_by=$eid WHERE id=$oid", $conn);
+
+    # Lock
+          mysql_query("SELECT * FROM users WHERE id=$eid FOR UPDATE");
+    $c =  mysql_query("UPDATE users SET balance=balance + (@COST * (1 - $fee)) WHERE id=$eid", $conn);
+
+    # Lock
+          mysql_query("SELECT * FROM users WHERE id=@CUSTOMER FOR UPDATE");
+    $d =  mysql_query("UPDATE users SET balance=balance - @COST WHERE id=@CUSTOMER", $conn);
 
     if ($a && $b && $c && $d) {
       mysql_query("COMMIT", $conn);
@@ -31,6 +49,8 @@
     } else {
       mysql_query("ROLLBACK", $conn);
     }
+
+    ob_end_flush();
   }
 
   respond_unprocessable();

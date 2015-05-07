@@ -10,4 +10,9 @@
     http_response_code(500);
   }
 
+  # HTTP 409
+  function respond_conflict() {
+    http_response_code(409);
+  }
+
   ?>
