@@ -23,16 +23,22 @@
 
       $password_digest = hmac_sha256($password, $email); # Ok?
 
-      $q = mysqli_query($conn, "SELECT * FROM users WHERE password_digest='$password_digest' AND email='$email'");
+      if ($q = mysqli_query($conn, "SELECT * FROM users WHERE password_digest='$password_digest' AND email='$email'")) {
 
-      $rs   = mysqli_num_rows($q);
-      $user = mysqli_fetch_assoc($q);
+        $rs   = mysqli_num_rows($q);
+        $user = mysqli_fetch_assoc($q);
 
-      if ($rs == 1) {
-        $_SESSION['user'] = $user['id'];
-        header("location: orders.php");
+        if ($rs == 1) {
+          $_SESSION['user'] = $user['id'];
+          header("location: orders.php");
+        } else {
+          push_error("Email or Password is invalid!");
+        }
+
       } else {
-        push_error("Email or Password is invalid!");
+
+        push_error("Sorry! We're experiencing some problems right now and can't sign-in you.");
+
       }
 
       db_conn_close($conn);
