@@ -2,7 +2,7 @@
 
   session_start();
 
-  include('loginx.php');
+  include('loginX.php');
 
   if (isset($_SESSION['user'])) {
     header("location: orders.php");
