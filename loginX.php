@@ -1,7 +1,7 @@
 <?php
   include('connX.php');
   include('cryptoX.php');
-  include('errors.php');
+  include('errorsX.php');
   include('responsesX.php');
 
   ob_start();
