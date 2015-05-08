@@ -23,7 +23,7 @@ CREATE TABLE executor_attrs (
                                               ON UPDATE CASCADE
 );
 
-#Orders
+# Orders
 CREATE TABLE orders (
   id INT PRIMARY KEY AUTO_INCREMENT,
   short_description TEXT NOT NULL,
@@ -40,3 +40,21 @@ CREATE TABLE orders (
 ) 
   AUTO_INCREMENT = 1, 
   ENGINE = innodb;
+
+
+# View
+CREATE OR REPLACE
+  ALGORITHM = TEMPTABLE
+VIEW orders_mview (
+  id,
+  short_description,
+  full_description,
+  cost,
+  email 
+) AS SELECT orders.id                 AS order_id, 
+            orders.short_description  AS order_short_description,
+            orders.full_description   AS order_full_description,
+            orders.cost               AS order_cost,
+            users.email               AS order_created_by
+  FROM orders JOIN users ON orders.created_by = users.id
+  WHERE executed_by IS NULL ORDER BY orders.id DESC

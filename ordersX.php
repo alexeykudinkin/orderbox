@@ -4,11 +4,11 @@
 
     $from = mysqli_real_escape_string($conn, stripslashes($_GET['from']));
 
-    $q = mysqli_query($conn, "SELECT orders.*, users.email FROM orders JOIN users ON orders.created_by = users.id WHERE orders.id > $from ORDER BY orders.id DESC"); 
+    $q = mysqli_query($conn, "SELECT * FROM orders_mview AS orders WHERE orders.id > $from"); 
 
   } else {
 
-    $q = mysqli_query($conn, "SELECT orders.*, users.email FROM orders JOIN users ON orders.created_by = users.id ORDER BY orders.id DESC"); 
+    $q = mysqli_query($conn, "SELECT * FROM orders_mview");
 
   }
 
@@ -16,9 +16,6 @@
     push_error("Failed to fetch orders!");
 
   while ($q && $order = mysqli_fetch_assoc($q)) { 
-
-    if (isset($order['executed_by']))
-      continue;
 
     $short_description  = htmlspecialchars($order['short_description']);
     $full_description   = htmlspecialchars($order['full_description']);
