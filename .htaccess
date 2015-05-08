@@ -1,3 +1,7 @@
+RewriteEngine On
+
+RewriteRule ^$ /login.php [R=301,L]
+
 <Files ~ ".*(x|X)\.php$">
   Order deny,allow
   Deny from all
